@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EnergyWatch Home — ระบบเฝ้าระวังการใช้ไฟฟ้า</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root{
+  --bg:#f4f7fb; --card:#fff; --text:#14213d; --muted:#718096; --line:#e7edf5;
+  --primary:#2563eb; --primary2:#4f46e5; --green:#16a34a; --amber:#d97706; --red:#dc2626;
+  --shadow:0 10px 30px rgba(20,33,61,.07); --radius:18px;
+}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,"Noto Sans Thai",system-ui,sans-serif;background:var(--bg);color:var(--text)}
+.app{display:flex;min-height:100vh}.sidebar{width:250px;background:#101b36;color:#fff;padding:24px 16px;position:fixed;inset:0 auto 0 0}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:19px;padding:8px 10px 28px}.brand-icon{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#38bdf8,#6366f1);display:grid;place-items:center;font-size:22px}
+.nav{display:grid;gap:7px}.nav a{color:#b9c5dd;text-decoration:none;padding:12px 13px;border-radius:12px;display:flex;gap:12px;align-items:center;font-size:14px}.nav a.active,.nav a:hover{background:#1d2b4f;color:#fff}
+.sidebar-bottom{position:absolute;bottom:24px;left:16px;right:16px;background:#172443;border:1px solid #29395e;border-radius:15px;padding:14px;font-size:12px;color:#aebbd3}
+.main{margin-left:250px;width:calc(100% - 250px);padding:26px 30px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}.title h1{font-size:25px;margin:0 0 5px}.title p{margin:0;color:var(--muted);font-size:13px}.actions{display:flex;gap:10px;align-items:center}.select,.btn{background:#fff;border:1px solid var(--line);border-radius:11px;padding:10px 13px;color:var(--text);font-size:13px}.btn{cursor:pointer}.btn.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+.status{display:flex;gap:8px;align-items:center;background:#ecfdf3;border:1px solid #bbf7d0;color:#15803d;padding:8px 11px;border-radius:999px;font-size:12px;font-weight:700}.dot{width:7px;height:7px;border-radius:50%;background:#22c55e}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:19px}.metric{position:relative;overflow:hidden}.metric .label{font-size:12px;color:var(--muted)}.metric .value{font-size:27px;font-weight:800;margin:8px 0 5px}.metric .sub{font-size:12px}.up{color:var(--red)}.down{color:var(--green)}.metric-icon{position:absolute;right:17px;top:17px;width:38px;height:38px;border-radius:11px;background:#eef4ff;display:grid;place-items:center}
+.gridmain{display:grid;grid-template-columns:1.65fr 1fr;gap:18px}.card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.card-head h2{font-size:16px;margin:0}.card-head span{font-size:12px;color:var(--muted)}
+.chartbox{height:300px}.legend{display:flex;gap:18px;font-size:11px;color:var(--muted)}.legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;background:var(--primary)}
+.alert{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}.alert:last-child{border-bottom:0}.alert-icon{width:35px;height:35px;border-radius:10px;display:grid;place-items:center;flex:0 0 auto}.warn{background:#fff7ed;color:#c2410c}.danger{background:#fef2f2;color:#b91c1c}.ok{background:#f0fdf4;color:#15803d}.alert strong{font-size:13px}.alert p{margin:3px 0 0;color:var(--muted);font-size:11px;line-height:1.5}
+.devices{margin-top:18px}.device{display:grid;grid-template-columns:38px 1fr auto;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}.device:last-child{border:0}.device-icon{width:38px;height:38px;border-radius:11px;background:#f2f5fa;display:grid;place-items:center;font-size:18px}.device-name{font-size:13px;font-weight:700}.device-meta{font-size:11px;color:var(--muted);margin-top:2px}.device-power{text-align:right}.device-power b{font-size:13px}.bar{height:5px;background:#edf1f6;border-radius:10px;margin-top:5px;width:120px;overflow:hidden}.bar span{display:block;height:100%;background:linear-gradient(90deg,#38bdf8,#4f46e5);border-radius:10px}
+footer{font-size:11px;color:#8a96aa;text-align:center;margin:20px 0 5px}
+@media(max-width:1050px){.grid4{grid-template-columns:repeat(2,1fr)}.gridmain{grid-template-columns:1fr}}
+@media(max-width:720px){.sidebar{width:70px;padding:15px 10px}.brand span,.nav a span,.sidebar-bottom{display:none}.brand{padding:8px 5px 20px}.nav a{justify-content:center}.main{margin-left:70px;width:calc(100% - 70px);padding:18px}.grid4{grid-template-columns:1fr}.top{align-items:flex-start;gap:12px;flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="brand-icon">⚡</div><span>EnergyWatch</span></div>
+  <nav class="nav">
+    <a class="active" href="#"><span>◉</span><span>ภาพรวม</span></a>
+    <a href="#"><span>◫</span><span>การใช้พลังงาน</span></a>
+    <a href="#"><span>⌂</span><span>อุปกรณ์ไฟฟ้า</span></a>
+    <a href="#"><span>⚠</span><span>การแจ้งเตือน</span></a>
+    <a href="#"><span>▣</span><span>รายงาน</span></a>
+    <a href="#"><span>⚙</span><span>ตั้งค่า</span></a>
+  </nav>
+  <div class="sidebar-bottom">บ้าน: บ้านพักอาศัย<br><b style="color:#fff">มิเตอร์ออนไลน์</b> · อัปเดต 10 วินาที</div>
+</aside>
+
+<main class="main">
+  <div class="top">
+    <div class="title"><h1>ภาพรวมการใช้พลังงาน</h1><p>ติดตามการใช้ไฟฟ้าแบบเรียลไทม์และช่วยลดค่าไฟในบ้าน</p></div>
+    <div class="actions"><div class="status"><i class="dot"></i> ระบบออนไลน์</div><select class="select"><option>วันนี้ · 2 ส.ค. 2026</option><option>เมื่อวาน</option><option>7 วันที่ผ่านมา</option></select><button class="btn primary" onclick="alert('ส่งออกรายงานตัวอย่างแล้ว')">↓ ส่งออกรายงาน</button></div>
+  </div>
+
+  <section class="grid4">
+    <div class="card metric"><div class="metric-icon">⚡</div><div class="label">กำลังไฟปัจจุบัน</div><div class="value" id="livePower">1.84 kW</div><div class="sub up">↑ 12% เทียบกับค่าเฉลี่ย</div></div>
+    <div class="card metric"><div class="metric-icon">🔋</div><div class="label">พลังงานวันนี้</div><div class="value">14.62 kWh</div><div class="sub down">↓ 8.4% จากเมื่อวาน</div></div>
+    <div class="card metric"><div class="metric-icon">฿</div><div class="label">ค่าไฟประมาณการ</div><div class="value">฿ 1,286</div><div class="sub">คาดการณ์สิ้นเดือน ฿ 1,740</div></div>
+    <div class="card metric"><div class="metric-icon">🎯</div><div class="label">เป้าหมายประหยัด</div><div class="value">76%</div><div class="sub down">เหลืออีก 24% ถึงเป้าหมาย</div></div>
+  </section>
+
+  <section class="gridmain">
+    <div class="card">
+      <div class="card-head"><div><h2>การใช้ไฟฟ้าวันนี้</h2><span>กำลังไฟฟ้าเฉลี่ยรายชั่วโมง</span></div><div class="legend"><span><i></i> kW</span></div></div>
+      <div class="chartbox"><canvas id="energyChart"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div><h2>เฝ้าระวังอัจฉริยะ</h2><span>เหตุการณ์ล่าสุด</span></div><span>ดูทั้งหมด →</span></div>
+      <div class="alert"><div class="alert-icon warn">⚠</div><div><strong>แอร์ห้องนั่งเล่นใช้ไฟสูง</strong><p>ใช้กำลังไฟ 1.24 kW ต่อเนื่อง 2 ชม. สูงกว่าค่าเฉลี่ย 31%</p></div></div>
+      <div class="alert"><div class="alert-icon danger">!</div><div><strong>ตรวจพบโหลดผิดปกติ</strong><p>ช่วง 08:42 น. มีการใช้ไฟพุ่งขึ้น 2.8 kW</p></div></div>
+      <div class="alert"><div class="alert-icon ok">✓</div><div><strong>เป้าหมายวันนี้ยังอยู่ในเกณฑ์</strong><p>คาดว่าจะใช้พลังงานต่ำกว่าเป้าหมาย 6%</p></div></div>
+    </div>
+  </section>
+
+  <section class="card devices">
+    <div class="card-head"><div><h2>อุปกรณ์ที่ใช้ไฟสูงสุด</h2><span>เรียงตามกำลังไฟ ณ ปัจจุบัน</span></div><button class="btn">จัดการอุปกรณ์</button></div>
+    <div class="device"><div class="device-icon">❄️</div><div><div class="device-name">เครื่องปรับอากาศ · ห้องนั่งเล่น</div><div class="device-meta">เปิด 2 ชม. 18 นาที · อุณหภูมิ 25°C</div></div><div class="device-power"><b>1.24 kW</b><div class="bar"><span style="width:88%"></span></div></div></div>
+    <div class="device"><div class="device-icon">🚿</div><div><div class="device-name">เครื่องทำน้ำอุ่น · ห้องน้ำ</div><div class="device-meta">เปิด 24 นาที · ตรวจพบล่าสุด 09:02</div></div><div class="device-power"><b>0.82 kW</b><div class="bar"><span style="width:59%"></span></div></div></div>
+    <div class="device"><div class="device-icon">🧊</div><div><div class="device-name">ตู้เย็น · ห้องครัว</div><div class="device-meta">ทำงานอัตโนมัติ · สถานะปกติ</div></div><div class="device-power"><b>0.18 kW</b><div class="bar"><span style="width:18%"></span></div></div></div>
+    <div class="device"><div class="device-icon">📺</div><div><div class="device-name">ทีวี · ห้องนั่งเล่น</div><div class="device-meta">เปิด 1 ชม. 06 นาที</div></div><div class="device-power"><b>0.09 kW</b><div class="bar"><span style="width:10%"></span></div></div></div>
+  </section>
+  <footer>EnergyWatch Home · Prototype Dashboard · ข้อมูลตัวอย่างสำหรับการออกแบบระบบ</footer>
+</main>
+</div>
+<script>
+const ctx=document.getElementById('energyChart');
+const labels=['00:00','02:00','04:00','06:00','08:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00'];
+const data=[0.42,0.36,0.31,0.58,1.22,1.76,1.42,1.18,1.63,2.18,1.84,1.05];
+new Chart(ctx,{type:'line',data:{labels,datasets:[{data,borderWidth:3,pointRadius:3,tension:.38,fill:true,backgroundColor:'rgba(37,99,235,.08)',borderColor:'#2563eb',pointBackgroundColor:'#2563eb'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y} kW`}}},scales:{x:{grid:{display:false},ticks:{color:'#8a96aa',font:{size:10}}},y:{beginAtZero:true,suggestedMax:3,grid:{color:'#edf1f6'},ticks:{color:'#8a96aa',font:{size:10},callback:v=>v+' kW'}}}}});
+setInterval(()=>{const n=(1.65+Math.random()*.45).toFixed(2);document.getElementById('livePower').textContent=n+' kW'},4000);
+</script>
+</body>
+</html>
