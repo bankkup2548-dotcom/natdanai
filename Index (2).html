@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EnergyWatch Home — Smart Energy Management v4</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#f4f7fb;--surface:#fff;--ink:#14213d;--muted:#718096;--line:#e5eaf2;--blue:#2563eb;--indigo:#4f46e5;--green:#16a34a;--amber:#d97706;--red:#dc2626;--nav:#0d1830;--shadow:0 12px 32px rgba(20,33,61,.07);--r:18px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,"Noto Sans Thai",system-ui,sans-serif}.app{min-height:100vh}.sidebar{position:fixed;inset:0 auto 0 0;width:252px;background:var(--nav);color:#fff;padding:22px 15px;z-index:5}.brand{display:flex;align-items:center;gap:11px;font-weight:850;font-size:18px;padding:7px 10px 27px}.logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#22d3ee,#6366f1);display:grid;place-items:center;font-size:22px}.nav{display:grid;gap:6px}.nav button{border:0;background:none;color:#b9c5da;width:100%;text-align:left;padding:12px;border-radius:12px;cursor:pointer;font:inherit;font-size:13px}.nav button:hover,.nav button.active{background:#1a294b;color:#fff}.side-note{position:absolute;bottom:18px;left:15px;right:15px;padding:13px;border:1px solid #293a5e;background:#162342;border-radius:14px;color:#aab7ce;font-size:11px}.side-note b{color:#fff}.main{margin-left:252px;padding:24px 30px 35px}.top{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:22px}.eyebrow{font-size:11px;color:var(--blue);font-weight:800}.title h1{margin:4px 0;font-size:26px}.title p{margin:0;color:var(--muted);font-size:13px}.tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.select,.btn,.field{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:11px;padding:9px 12px;font-size:12px}.btn{cursor:pointer}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.danger{background:#fff;border-color:#fecaca;color:var(--red)}.online{display:flex;align-items:center;gap:7px;background:#ecfdf3;color:#15803d;border:1px solid #bbf7d0;border-radius:999px;padding:8px 11px;font-size:11px;font-weight:800}.pulse{width:7px;height:7px;background:#22c55e;border-radius:50%}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:18px}.metric{min-height:132px;position:relative}.metric-icon{position:absolute;right:16px;top:16px;width:37px;height:37px;border-radius:11px;background:#eef4ff;display:grid;place-items:center}.label{font-size:11px;color:var(--muted)}.value{font-size:26px;font-weight:850;margin:9px 0 5px}.sub,.mini{font-size:11px}.good{color:var(--green)}.bad{color:var(--red)}.warn{color:var(--amber)}.section{margin-top:17px}.two{display:grid;grid-template-columns:1.55fr 1fr;gap:17px}.head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:14px}.head h2{font-size:15px;margin:0 0 4px}.head p,.head span{font-size:11px;color:var(--muted);margin:0}.chart{height:295px}.chart.large{height:340px}.alert{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.alert:last-child{border:0}.aicon{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:0 0 auto}.a-w{background:#fff7ed;color:#c2410c}.a-r{background:#fef2f2;color:#b91c1c}.a-g{background:#f0fdf4;color:#15803d}.alert b{font-size:12px}.alert p{font-size:10.5px;color:var(--muted);margin:3px 0;line-height:1.5}.table{width:100%;border-collapse:collapse;font-size:11px}.table th{color:var(--muted);font-weight:600;text-align:left;padding:10px 9px;border-bottom:1px solid var(--line)}.table td{padding:11px 9px;border-bottom:1px solid var(--line)}.table tr:last-child td{border:0}.device{display:flex;align-items:center;gap:9px}.dicon{width:32px;height:32px;border-radius:9px;background:#f2f5fa;display:grid;place-items:center}.badge{border-radius:999px;padding:4px 8px;font-size:9px;font-weight:800}.b-on{background:#ecfdf3;color:#15803d}.b-off{background:#f1f5f9;color:#64748b}.b-warn{background:#fff7ed;color:#c2410c}.bar{height:5px;background:#edf1f6;border-radius:8px;width:110px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#38bdf8,#4f46e5);border-radius:8px}.switch{appearance:none;width:37px;height:21px;background:#cbd5e1;border-radius:20px;position:relative;cursor:pointer;vertical-align:middle}.switch:checked{background:var(--blue)}.switch:before{content:"";position:absolute;width:17px;height:17px;top:2px;left:2px;background:#fff;border-radius:50%;transition:.2s}.switch:checked:before{left:18px}.bottom{display:grid;grid-template-columns:1fr 1fr;gap:17px}.ring{width:105px;height:105px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--blue) 76%,#e8edf5 0);position:relative}.ring:before{content:"";position:absolute;width:78px;height:78px;border-radius:50%;background:#fff}.ring b{position:relative;font-size:22px}.goal{display:flex;align-items:center;gap:20px}.goal h3{margin:0 0 5px;font-size:14px}.goal p{margin:0;color:var(--muted);font-size:11px;line-height:1.6}.page{display:none}.page.active{display:block}.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.stat{padding:15px;background:#f8fafc;border:1px solid var(--line);border-radius:14px}.stat b{font-size:20px;display:block;margin-top:5px}.filters{display:flex;gap:8px;flex-wrap:wrap}.two-col{display:grid;grid-template-columns:1.5fr 1fr;gap:17px}.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.progress{height:8px;background:#edf1f6;border-radius:20px;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,#2563eb,#4f46e5)}.empty{text-align:center;padding:35px;color:var(--muted)}.modal{position:fixed;inset:0;background:#08122699;display:none;place-items:center;z-index:20;padding:20px}.modal.open{display:grid}.modalbox{background:#fff;width:min(620px,100%);border-radius:18px;padding:22px;max-height:90vh;overflow:auto}.close{float:right;border:0;background:#f1f5f9;border-radius:8px;padding:7px;cursor:pointer}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{width:100%;margin-top:6px}.toast{position:fixed;right:22px;bottom:22px;background:#14213d;color:#fff;padding:12px 16px;border-radius:12px;z-index:50;font-size:12px;box-shadow:var(--shadow);display:none}.toast.show{display:block}.footer{text-align:center;color:#8995a9;font-size:10px;margin-top:18px}
+@media(max-width:1100px){.grid4,.kpi-grid{grid-template-columns:repeat(2,1fr)}.two,.two-col,.bottom{grid-template-columns:1fr}.three-col{grid-template-columns:1fr}}
+@media(max-width:720px){.sidebar{width:68px;padding:14px 9px}.brand span,.nav button span,.side-note{display:none}.brand{padding:7px 5px 20px}.nav button{text-align:center}.main{margin-left:68px;padding:17px}.top{align-items:flex-start;flex-direction:column}.grid4,.kpi-grid{grid-template-columns:1fr}.tools{width:100%}.tools>*{flex:1}.chart,.chart.large{height:250px}.formgrid{grid-template-columns:1fr}.table{min-width:700px}.table-wrap{overflow:auto}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+<div class="brand"><div class="logo">⚡</div><span>EnergyWatch</span></div>
+<nav class="nav">
+<button class="active" data-page="dashboard">◉ <span>ภาพรวม</span></button>
+<button data-page="energy">◫ <span>การใช้พลังงาน</span></button>
+<button data-page="devices">⌂ <span>อุปกรณ์ไฟฟ้า</span></button>
+<button data-page="alerts">⚠ <span>การแจ้งเตือน</span></button>
+<button data-page="reports">▣ <span>รายงาน</span></button>
+<button data-page="settings">⚙ <span>ตั้งค่า</span></button>
+</nav>
+<div class="side-note">บ้านพักอาศัย<br><b>● Smart Meter Online</b><br>อัปเดตข้อมูลแบบเรียลไทม์</div>
+</aside>
+
+<main class="main">
+<header class="top">
+<div class="title"><div class="eyebrow">SMART HOME ENERGY MANAGEMENT</div><h1 id="pageTitle">ภาพรวมการใช้พลังงาน</h1><p id="pageDesc">ติดตาม วิเคราะห์ และลดการใช้ไฟฟ้าของบ้านจากหน้าจอเดียว</p></div>
+<div class="tools"><div class="online"><i class="pulse"></i> ONLINE</div><select id="globalRange" class="select"><option value="day">วันนี้</option><option value="week">7 วันที่ผ่านมา</option><option value="month">30 วันที่ผ่านมา</option></select><button class="btn" id="settingsBtn">⚙ ตั้งค่า</button><button class="btn primary" id="exportBtn">↓ ส่งออกรายงาน</button></div>
+</header>
+
+<!-- DASHBOARD -->
+<section class="page active" id="page-dashboard">
+<div class="grid4">
+<div class="card metric"><div class="metric-icon">⚡</div><div class="label">กำลังไฟปัจจุบัน</div><div class="value" id="livePower">1.84 kW</div><div class="sub bad">↑ 12% สูงกว่าค่าเฉลี่ย</div></div>
+<div class="card metric"><div class="metric-icon">🔋</div><div class="label">พลังงานวันนี้</div><div class="value" id="dashKwh">14.62 kWh</div><div class="sub good">↓ 8.4% จากเมื่อวาน</div></div>
+<div class="card metric"><div class="metric-icon">฿</div><div class="label">ค่าไฟประมาณการ</div><div class="value">฿ 1,286</div><div class="sub">คาดการณ์สิ้นเดือน ฿ 1,740</div></div>
+<div class="card metric"><div class="metric-icon">🎯</div><div class="label">เป้าหมายประหยัด</div><div class="value">76%</div><div class="sub good">เหลืออีก 24% ถึงเป้าหมาย</div></div>
+</div>
+<div class="section two">
+<div class="card"><div class="head"><div><h2>แนวโน้มการใช้ไฟฟ้า</h2><p>กำลังไฟเฉลี่ยตามช่วงเวลา · kW</p></div><span id="lastUpdate">กำลังอัปเดต...</span></div><div class="chart"><canvas id="mainChart"></canvas></div></div>
+<div class="card"><div class="head"><div><h2>การเฝ้าระวังอัจฉริยะ</h2><p>เหตุการณ์ล่าสุด</p></div><button class="btn" onclick="navigate('alerts')">ดูทั้งหมด</button></div>
+<div class="alert"><div class="aicon a-w">⚠</div><div><b>แอร์ห้องนั่งเล่นใช้ไฟสูง</b><p>1.24 kW ต่อเนื่อง 2 ชม. สูงกว่าค่าเฉลี่ย 31%</p></div></div>
+<div class="alert"><div class="aicon a-r">!</div><div><b>ตรวจพบโหลดผิดปกติ</b><p>08:42 น. การใช้ไฟพุ่งขึ้น 2.8 kW</p></div></div>
+<div class="alert"><div class="aicon a-g">✓</div><div><b>เป้าหมายวันนี้ยังอยู่ในเกณฑ์</b><p>คาดว่าจะใช้พลังงานต่ำกว่าเป้าหมาย 6%</p></div></div>
+</div></div>
+<div class="section card"><div class="head"><div><h2>อุปกรณ์ที่ใช้ไฟสูงสุด</h2><p>เรียงตามกำลังไฟ ณ ปัจจุบัน</p></div><button class="btn primary" onclick="navigate('devices')">จัดการอุปกรณ์</button></div>
+<div class="table-wrap"><table class="table"><thead><tr><th>อุปกรณ์</th><th>สถานะ</th><th>กำลังไฟ</th><th>สัดส่วน</th></tr></thead><tbody>
+<tr><td>❄️ แอร์ · ห้องนั่งเล่น</td><td><span class="badge b-on">เปิด</span></td><td>1.24 kW</td><td><div class="bar"><i style="width:88%"></i></div></td></tr>
+<tr><td>🚿 เครื่องทำน้ำอุ่น · ห้องน้ำ</td><td><span class="badge b-on">เปิด</span></td><td>0.82 kW</td><td><div class="bar"><i style="width:59%"></i></div></td></tr>
+<tr><td>🧊 ตู้เย็น · ห้องครัว</td><td><span class="badge b-on">เปิด</span></td><td>0.18 kW</td><td><div class="bar"><i style="width:18%"></i></div></td></tr>
+</tbody></table></div></div>
+</section>
+
+<!-- ENERGY -->
+<section class="page" id="page-energy">
+<div class="card"><div class="head"><div><h2>การใช้พลังงานไฟฟ้า</h2><p>วิเคราะห์การใช้ไฟฟ้าแบบละเอียด</p></div><div class="filters"><select id="energyPeriod" class="select"><option value="24">24 ชั่วโมง</option><option value="7">7 วัน</option><option value="30">30 วัน</option></select></div></div>
+<div class="kpi-grid"><div class="stat">ใช้ไฟวันนี้<b>14.62 kWh</b><span class="good">↓ 8.4%</span></div><div class="stat">สูงสุด<b>2.18 kW</b><span class="warn">18:00–20:00</span></div><div class="stat">ค่าไฟวันนี้<b>฿ 61.40</b><span class="mini">4.20 ฿/kWh</span></div><div class="stat">เทียบเป้าหมาย<b class="good">−6%</b><span class="mini">ดีกว่าเป้าหมาย</span></div></div>
+<div class="chart large" style="margin-top:18px"><canvas id="energyChart"></canvas></div></div>
+<div class="section two-col"><div class="card"><div class="head"><h2>สัดส่วนการใช้ไฟตามอุปกรณ์</h2></div><div class="chart"><canvas id="devicePie"></canvas></div></div>
+<div class="card"><div class="head"><h2>ช่วงเวลาที่ควรเฝ้าระวัง</h2></div><div class="alert"><div class="aicon a-w">⚠</div><div><b>18:00–20:00</b><p>โหลดสูงจากแอร์และเครื่องทำน้ำอุ่น</p></div></div><div class="alert"><div class="aicon a-g">✓</div><div><b>02:00–05:00</b><p>การใช้ไฟต่ำ เหมาะสำหรับตั้งเวลาทำงาน</p></div></div><div class="alert"><div class="aicon a-r">!</div><div><b>08:42 น.</b><p>พบการใช้ไฟกระโดดถึง 2.8 kW</p></div></div></div></div>
+</section>
+
+<!-- DEVICES -->
+<section class="page" id="page-devices">
+<div class="card"><div class="head"><div><h2>อุปกรณ์ไฟฟ้า</h2><p>ควบคุม ตรวจสอบ และตั้งเวลาการทำงานของอุปกรณ์</p></div><button class="btn primary" id="addDevice">+ เพิ่มอุปกรณ์</button></div>
+<div class="kpi-grid"><div class="stat">อุปกรณ์ทั้งหมด<b id="deviceCount">6</b></div><div class="stat">กำลังเปิด<b class="good" id="onCount">4</b></div><div class="stat">กำลังไฟรวม<b id="totalPower">2.33 kW</b></div><div class="stat">ออฟไลน์<b>0</b></div></div>
+<div class="table-wrap" style="margin-top:16px"><table class="table"><thead><tr><th>อุปกรณ์</th><th>สถานะ</th><th>กำลังไฟ</th><th>การใช้วันนี้</th><th>โหมด</th><th>ควบคุม</th></tr></thead><tbody id="deviceRows"></tbody></table></div></div>
+<div class="section three-col"><div class="card"><div class="head"><h2>ตั้งเวลาอัตโนมัติ</h2></div><p class="mini">แอร์ห้องนอน · 22:00 ปิดอัตโนมัติ</p><button class="btn" onclick="toast('เปิดหน้าตั้งเวลาอัตโนมัติ')">จัดการตาราง</button></div><div class="card"><div class="head"><h2>โหมดประหยัด</h2></div><p class="mini">ระบบจะปิดอุปกรณ์ที่ไม่จำเป็นเมื่อไม่มีการใช้งาน</p><button class="btn primary" onclick="toast('เปิดโหมดประหยัดพลังงานแล้ว')">เปิดใช้งาน</button></div><div class="card"><div class="head"><h2>ความปลอดภัย</h2></div><p class="mini">ตัดการทำงานเมื่อโหลดเกิน 3.00 kW</p><button class="btn" onclick="toast('ตั้งค่าความปลอดภัยแล้ว')">ตั้งค่า</button></div></div>
+</section>
+
+<!-- ALERTS -->
+<section class="page" id="page-alerts">
+<div class="card"><div class="head"><div><h2>การแจ้งเตือน</h2><p>ติดตามเหตุการณ์ผิดปกติและสถานะความปลอดภัยของระบบ</p></div><div class="filters"><button class="btn" id="markRead">✓ ทำเครื่องหมายว่าอ่านแล้ว</button><button class="btn danger" id="clearAlerts">ล้างแจ้งเตือน</button></div></div>
+<div class="kpi-grid"><div class="stat">ทั้งหมด<b id="alertTotal">4</b></div><div class="stat">วิกฤต<b class="bad" id="criticalCount">1</b></div><div class="stat">คำเตือน<b class="warn">2</b></div><div class="stat">ปกติ<b class="good">1</b></div></div>
+<div id="alertList" style="margin-top:10px">
+<div class="alert"><div class="aicon a-r">!</div><div style="flex:1"><b>โหลดไฟฟ้าสูงผิดปกติ</b><p>เวลา 08:42 · กำลังไฟ 2.80 kW สูงกว่าเกณฑ์ 2.50 kW</p></div><span class="badge b-warn">ใหม่</span></div>
+<div class="alert"><div class="aicon a-w">⚠</div><div style="flex:1"><b>แอร์ห้องนั่งเล่นใช้ไฟสูง</b><p>ใช้ 1.24 kW ต่อเนื่อง 2 ชั่วโมง</p></div><span class="badge b-warn">ใหม่</span></div>
+<div class="alert"><div class="aicon a-w">⚠</div><div style="flex:1"><b>ค่าใช้พลังงานช่วงเย็นสูงกว่าค่าเฉลี่ย</b><p>สูงขึ้น 18% เมื่อเทียบกับ 7 วันที่ผ่านมา</p></div><span class="badge b-warn">ใหม่</span></div>
+<div class="alert"><div class="aicon a-g">✓</div><div style="flex:1"><b>ระบบออนไลน์ปกติ</b><p>Smart Meter ส่งข้อมูลล่าสุดเมื่อไม่กี่วินาทีที่ผ่านมา</p></div><span class="badge b-on">ปกติ</span></div>
+</div></div>
+<div class="section two-col"><div class="card"><div class="head"><h2>เกณฑ์แจ้งเตือน</h2></div><label class="mini">กำลังไฟสูงสุด (kW)<input class="field" id="alertThreshold" value="2.50"></label><br><br><label class="mini">แจ้งเตือนเมื่อใช้ไฟรายวันเกิน (kWh)<input class="field" value="20"></label><br><br><button class="btn primary" onclick="saveAlertSettings()">บันทึกเกณฑ์</button></div>
+<div class="card"><div class="head"><h2>ช่องทางแจ้งเตือน</h2></div><p>🔔 Browser Notification <input class="switch" type="checkbox" checked></p><p>📱 LINE / Telegram <input class="switch" type="checkbox"></p><p>📧 Email <input class="switch" type="checkbox"></p></div></div>
+</section>
+
+<!-- REPORTS -->
+<section class="page" id="page-reports">
+<div class="card"><div class="head"><div><h2>รายงานและสถิติ</h2><p>สรุปค่าไฟ พลังงาน และประสิทธิภาพย้อนหลัง</p></div><button class="btn primary" onclick="exportCSV()">↓ ดาวน์โหลด CSV</button></div>
+<div class="kpi-grid"><div class="stat">พลังงานเดือนนี้<b>243 kWh</b><span class="good">−8.4%</span></div><div class="stat">ค่าไฟสะสม<b>฿1,286</b><span class="mini">ประมาณการ ฿1,740</span></div><div class="stat">ประหยัดได้<b class="good">฿184</b><span class="mini">เทียบเดือนก่อน</span></div><div class="stat">CO₂ โดยประมาณ<b>112 kg</b><span class="mini">ลดลง 7%</span></div></div>
+<div class="chart large" style="margin-top:18px"><canvas id="reportChart"></canvas></div></div>
+<div class="section two-col"><div class="card"><div class="head"><h2>สรุปค่าใช้จ่าย</h2></div><table class="table"><tr><td>ค่าไฟพลังงาน</td><td style="text-align:right">฿ 1,092</td></tr><tr><td>ค่าบริการ/ค่าธรรมเนียม</td><td style="text-align:right">฿ 54</td></tr><tr><td>ภาษีและรายการอื่น</td><td style="text-align:right">฿ 140</td></tr><tr><td><b>รวม</b></td><td style="text-align:right"><b>฿ 1,286</b></td></tr></table></div>
+<div class="card"><div class="head"><h2>คำแนะนำจากระบบ</h2></div><div class="alert"><div class="aicon a-g">✓</div><div><b>ปรับแอร์เป็น 26°C</b><p>คาดว่าลดพลังงานได้ประมาณ 4–7%</p></div></div><div class="alert"><div class="aicon a-w">⚡</div><div><b>ลดโหลดช่วง 18:00–20:00</b><p>เป็นช่วงที่มีค่าใช้ไฟสูงสุดของบ้าน</p></div></div></div></div>
+</section>
+
+<!-- SETTINGS -->
+<section class="page" id="page-settings">
+<div class="card"><div class="head"><div><h2>ตั้งค่าระบบ</h2><p>กำหนดค่าการคำนวณและการเฝ้าระวัง</p></div><button class="btn primary" onclick="saveSettings()">บันทึกทั้งหมด</button></div>
+<div class="formgrid"><label class="mini">ชื่อบ้าน<input class="field" id="homeName" value="บ้านพักอาศัย"></label><label class="mini">ค่าไฟต่อหน่วย (บาท)<input class="field" id="rate" value="4.20"></label><label class="mini">เป้าหมายรายเดือน (kWh)<input class="field" id="monthlyGoal" value="320"></label><label class="mini">กำลังไฟแจ้งเตือน (kW)<input class="field" id="powerLimit" value="2.50"></label></div>
+<hr style="border:0;border-top:1px solid var(--line);margin:20px 0"><h3 style="font-size:14px">ระบบอัตโนมัติ</h3>
+<p class="mini">โหมดประหยัดพลังงาน <input class="switch" type="checkbox" id="eco" checked></p><p class="mini">ตรวจจับการใช้ไฟผิดปกติ <input class="switch" type="checkbox" checked></p><p class="mini">แจ้งเตือนแบบ Real-time <input class="switch" type="checkbox" checked></p>
+</div>
+</section>
+
+<footer class="footer">EnergyWatch Home v4 · Full Interactive Frontend Prototype · พร้อมเชื่อม Smart Meter / MQTT / REST API / Database</footer>
+</main></div>
+
+<div class="modal" id="modal"><div class="modalbox"><button class="close" onclick="closeModal()">✕</button><h2 id="modalTitle">เพิ่มอุปกรณ์</h2><p class="mini">ข้อมูลจะถูกบันทึกในระบบจำลองของหน้าเว็บนี้</p><div class="formgrid"><label class="mini">ชื่ออุปกรณ์<input class="field" id="newName" placeholder="เช่น เครื่องซักผ้า"></label><label class="mini">ห้อง<input class="field" id="newRoom" placeholder="เช่น ห้องครัว"></label><label class="mini">กำลังไฟ (kW)<input class="field" id="newPower" value="0.50"></label><label class="mini">ไอคอน<input class="field" id="newIcon" value="🔌"></label></div><br><button class="btn primary" onclick="addDevice()">เพิ่มอุปกรณ์</button></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const state={page:'dashboard',devices:[
+{id:1,icon:'❄️',name:'แอร์ · ห้องนั่งเล่น',room:'25°C',power:1.24,kwh:6.2,on:true,mode:'Auto'},
+{id:2,icon:'🚿',name:'เครื่องทำน้ำอุ่น · ห้องน้ำ',room:'ใช้งานล่าสุด 09:02',power:.82,kwh:2.1,on:true,mode:'Normal'},
+{id:3,icon:'🧊',name:'ตู้เย็น · ห้องครัว',room:'โหมดอัตโนมัติ',power:.18,kwh:3.1,on:true,mode:'Eco'},
+{id:4,icon:'📺',name:'ทีวี · ห้องนั่งเล่น',room:'ใช้งาน 1ชม. 06นาที',power:.09,kwh:.8,on:false,mode:'Normal'},
+{id:5,icon:'🌀',name:'แอร์ · ห้องนอน',room:'26°C',power:0,kwh:1.7,on:false,mode:'Sleep'},
+{id:6,icon:'🧺',name:'เครื่องซักผ้า · ห้องซักล้าง',room:'พร้อมใช้งาน',power:0,kwh:0.4,on:false,mode:'Normal'}]};
+const titles={dashboard:['ภาพรวมการใช้พลังงาน','ติดตาม วิเคราะห์ และลดการใช้ไฟฟ้าของบ้านจากหน้าจอเดียว'],energy:['การใช้พลังงานไฟฟ้า','วิเคราะห์การใช้ไฟฟ้าแบบละเอียดและดูแนวโน้มย้อนหลัง'],devices:['อุปกรณ์ไฟฟ้า','ควบคุม ตรวจสอบ และตั้งเวลาการทำงานของอุปกรณ์'],alerts:['การแจ้งเตือน','ติดตามเหตุการณ์ผิดปกติและสถานะความปลอดภัยของระบบ'],reports:['รายงาน','สรุปค่าไฟ พลังงาน และประสิทธิภาพย้อนหลัง'],settings:['ตั้งค่าระบบ','กำหนดค่าการคำนวณและการเฝ้าระวัง']};
+let charts={};
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove('show'),2300)}
+function navigate(page){state.page=page;document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+page).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));document.getElementById('pageTitle').textContent=titles[page][0];document.getElementById('pageDesc').textContent=titles[page][1];if(page==='devices')renderDevices();if(page==='energy')renderEnergy();if(page==='reports')renderReports();if(page==='alerts')renderAlertCount();window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>navigate(b.dataset.page));
+document.getElementById('settingsBtn').onclick=()=>navigate('settings');
+document.getElementById('exportBtn').onclick=()=>exportCSV();
+document.getElementById('globalRange').onchange=()=>{if(state.page==='dashboard')renderMain();if(state.page==='reports')renderReports()};
+function makeLine(id,labels,data,label='kW'){if(charts[id])charts[id].destroy();charts[id]=new Chart(document.getElementById(id),{type:'line',data:{labels,datasets:[{label,data,borderColor:'#2563eb',backgroundColor:'rgba(37,99,235,.08)',fill:true,tension:.38,borderWidth:3,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.parsed.y+' '+label}}},scales:{x:{grid:{display:false},ticks:{font:{size:9}}},y:{beginAtZero:true,grid:{color:'#edf1f6'},ticks:{font:{size:9}}}}}})}
+function renderMain(){const r=document.getElementById('globalRange').value;let labels,data;if(r==='day'){labels=['00','02','04','06','08','10','12','14','16','18','20','22'];data=[.42,.36,.31,.58,1.22,1.76,1.42,1.18,1.63,2.18,1.84,1.05]}else if(r==='week'){labels=['จ','อ','พ','พฤ','ศ','ส','อา'];data=[12.8,14.1,13.4,15.2,14.6,16.1,14.62]}else{labels=['สัปดาห์ 1','สัปดาห์ 2','สัปดาห์ 3','สัปดาห์ 4'];data=[78,74,83,77]}makeLine('mainChart',labels,data,r==='day'?'kW':'kWh');}
+function renderEnergy(){const p=document.getElementById('energyPeriod').value;let labels,data;if(p==='24'){labels=['00','02','04','06','08','10','12','14','16','18','20','22'];data=[.42,.36,.31,.58,1.22,1.76,1.42,1.18,1.63,2.18,1.84,1.05]}else if(p==='7'){labels=['จ','อ','พ','พฤ','ศ','ส','อา'];data=[12.8,14.1,13.4,15.2,14.6,16.1,14.62]}else{labels=['สัปดาห์1','สัปดาห์2','สัปดาห์3','สัปดาห์4'];data=[78,74,83,77]}makeLine('energyChart',labels,data,p==='24'?'kW':'kWh');if(charts.pie)charts.pie.destroy();charts.pie=new Chart(document.getElementById('devicePie'),{type:'doughnut',data:{labels:['แอร์','น้ำอุ่น','ตู้เย็น','ทีวี','อื่นๆ'],datasets:[{data:[48,27,9,5,11],backgroundColor:['#2563eb','#4f46e5','#22c55e','#f59e0b','#cbd5e1'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10}}}}}})}
+document.getElementById('energyPeriod').onchange=renderEnergy;
+function renderDevices(){const rows=document.getElementById('deviceRows');rows.innerHTML='';state.devices.forEach(d=>{const tr=document.createElement('tr');tr.innerHTML=`<td><div class="device"><div class="dicon">${d.icon}</div><div><b>${d.name}</b><br><span class="mini">${d.room}</span></div></div></td><td><span class="badge ${d.on?'b-on':'b-off'}">${d.on?'เปิด':'ปิด'}</span></td><td><b>${d.power.toFixed(2)} kW</b></td><td>${d.kwh.toFixed(1)} kWh</td><td><select class="select" onchange="changeMode(${d.id},this.value)"><option ${d.mode==='Auto'?'selected':''}>Auto</option><option ${d.mode==='Eco'?'selected':''}>Eco</option><option ${d.mode==='Normal'?'selected':''}>Normal</option><option ${d.mode==='Sleep'?'selected':''}>Sleep</option></select></td><td><input class="switch" type="checkbox" ${d.on?'checked':''} onchange="toggleDevice(${d.id},this.checked)"></td>`;rows.appendChild(tr)});document.getElementById('deviceCount').textContent=state.devices.length;document.getElementById('onCount').textContent=state.devices.filter(x=>x.on).length;document.getElementById('totalPower').textContent=state.devices.reduce((a,x)=>a+x.power,0).toFixed(2)+' kW'}
+function toggleDevice(id,on){const d=state.devices.find(x=>x.id===id);d.on=on;d.power=on?Math.max(d.power,.12):0;renderDevices();toast(`${on?'เปิด':'ปิด'} ${d.name} สำเร็จ`)}
+function changeMode(id,mode){const d=state.devices.find(x=>x.id===id);d.mode=mode;toast(`เปลี่ยน ${d.name} เป็นโหมด ${mode}`)}
+document.getElementById('addDevice').onclick=()=>document.getElementById('modal').classList.add('open');
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+function addDevice(){const name=document.getElementById('newName').value.trim();if(!name){toast('กรุณาระบุชื่ออุปกรณ์');return}state.devices.push({id:Date.now(),icon:document.getElementById('newIcon').value||'🔌',name:name+' · '+(document.getElementById('newRoom').value||'บ้าน'),room:'พร้อมใช้งาน',power:+document.getElementById('newPower').value||0,kwh:0,on:false,mode:'Normal'});closeModal();renderDevices();toast('เพิ่มอุปกรณ์เรียบร้อย')}
+function renderAlertCount(){document.getElementById('alertTotal').textContent=document.querySelectorAll('#alertList .alert').length}
+document.getElementById('markRead').onclick=()=>{document.querySelectorAll('#alertList .badge').forEach(x=>{if(x.textContent==='ใหม่'){x.textContent='อ่านแล้ว';x.className='badge b-off'}});toast('ทำเครื่องหมายการแจ้งเตือนแล้ว')};
+document.getElementById('clearAlerts').onclick=()=>{document.getElementById('alertList').innerHTML='<div class="empty">✓ ไม่มีการแจ้งเตือนใหม่</div>';renderAlertCount();toast('ล้างการแจ้งเตือนแล้ว')};
+function saveAlertSettings(){toast('บันทึกเกณฑ์การแจ้งเตือนแล้ว')}
+function renderReports(){const labels=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.'];makeLine('reportChart',labels,[286,301,274,318,295,262,243],'kWh')}
+function exportCSV(){const rows=[['EnergyWatch Home Report'],['วันที่',new Date().toLocaleString('th-TH')],['พลังงานวันนี้','14.62 kWh'],['กำลังไฟปัจจุบัน',document.getElementById('livePower').textContent],['ค่าไฟประมาณการ','฿ 1,286'],[],['อุปกรณ์','สถานะ','kW','kWh วันนี้']];state.devices.forEach(d=>rows.push([d.name,d.on?'เปิด':'ปิด',d.power.toFixed(2),d.kwh.toFixed(1)]));const csv=rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(',')).join('\\n');const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,%EF%BB%BF'+encodeURIComponent(csv);a.download='energywatch-report.csv';a.click();toast('ดาวน์โหลดรายงาน CSV แล้ว')}
+function saveSettings(){toast('บันทึกการตั้งค่าระบบแล้ว')}
+setInterval(()=>{const p=1.55+Math.random()*.75;document.getElementById('livePower').textContent=p.toFixed(2)+' kW';document.getElementById('lastUpdate').textContent='อัปเดต '+new Date().toLocaleTimeString('th-TH');if(p>2.5)toast('⚠ ตรวจพบกำลังไฟสูงเกินเกณฑ์')},4000);
+renderMain();renderDevices();renderEnergy();renderReports();
+</script>
+</body>
+</html>
